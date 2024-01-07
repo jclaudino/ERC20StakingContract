@@ -186,11 +186,15 @@ describe("ERC20StakingContract", function () {
 
         // Check user1's token balance reflects the expected rewards
         const apr = await stakingContract.apr();
-        const expectedUser1Rewards = ethers.parseEther("1")
+        const expectedUser1Rewards = amountToDepositAsRewards
         const user1FinalBalance = await testToken.balanceOf(user1.address)
         console.log("user1InitialBalance: " + user1InitialBalance)
         console.log("user1FinalBalance: " + user1FinalBalance)
         expect(user1FinalBalance).to.equal(expectedUser1Rewards)
+
+        // Check the staking has been disabled since the rewards were depleted
+        const stakingEnabled = await stakingContract.stakingEnabled()
+        expect(stakingEnabled).to.equal(false)
     })
 
 })
