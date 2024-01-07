@@ -64,7 +64,9 @@ contract ERC20StakingContract is Ownable, ReentrancyGuard {
     /// @notice Enables staking functionality in the contract.
     /// @dev Sets the `stakingEnabled` flag to true, allowing users to stake tokens.
     ///      Can only be called by the contract owner.
+    ///      Requires that the reward balance is greater than zero
     function enableStaking() external onlyOwner {
+        require(_rewardBalance > 0, "Deposit reward tokens before enabling staking");
         stakingEnabled = true;
     }
 
