@@ -252,4 +252,38 @@ describe("ERC20StakingContract", function () {
         const user1FinalBalance = await testToken.balanceOf(user1.address)
         expect(user1FinalBalance).to.equal(expectedUser1FinalBalance)
     })
+
+    it("Should allow users to claim partial rewards", async function() {
+          const amountToDepositAsRewards = ethers.parseEther("1")
+          const user1InitialBalance = await testToken.balanceOf(user1.address)
+          const amountToStake = user1InitialBalance
+
+          // Deposit rewards into the staking contract
+          await testToken.connect(owner).approve(stakingContract.target, amountToDepositAsRewards)
+          await stakingContract.connect(owner).depositRewards(amountToDepositAsRewards)
+
+          // User1 stakes tokens
+          await testToken.connect(user1).approve(stakingContract.target, amountToStake)
+          await stakingContract.connect(user1).stake(amountToStake)
+
+          // Increase the timestamp to simulate 6 months passing
+          const oneYear = 365 * 24 * 60 * 60
+          const currentBlockNum = await ethers.provider.getBlockNumber();
+          const currentTime = await ethers.provider.getBlock(currentBlockNum);
+          await time.setNextBlockTimestamp(currentTime.timestamp + oneYear);
+
+          // User1 claims rewards
+          await stakingContract.connect(user1).unstakeAndClaimRewards()
+
+          // Check user1's token balance reflects the expected rewards
+          const apr = await stakingContract.apr();
+          const expectedUser1Rewards = amountToDepositAsRewards
+          const expectedUser1FinalBalance = user1InitialBalance + expectedUser1Rewards
+          const user1FinalBalance = await testToken.balanceOf(user1.address)
+          expect(user1FinalBalance).to.equal(expectedUser1FinalBalance)
+
+          // Check the staking has been disabled since the rewards were depleted
+          const stakingEnabled = await stakingContract.stakingEnabled()
+          expect(stakingEnabled).to.equal(false)
+      })
 })
