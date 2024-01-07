@@ -1,0 +1,16 @@
+# Node.js dependencies
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+yarn.lock
+
+# Hardhat artifacts and cache
+cache/
+artifacts/
+
+# Solidity compiler cache
+.cache-hardhat/
+
+# IntelliJ
+.idea/
