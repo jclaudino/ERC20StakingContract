@@ -108,8 +108,12 @@ contract ERC20StakingContract is Ownable, ReentrancyGuard {
     /// @notice Allows a user to claim their accumulated staking rewards.
     /// @dev Transfers the accumulated rewards to the user's address.
     ///      Disables staking if the reward pool is depleted.
+    ///      Requires that staking is enabled
+    ///      Requires that there are rewards left to distribute
     ///      Requires that the user has rewards available to claim.
     function claimRewards() external nonReentrant {
+        require(stakingEnabled, "Staking is currently disabled");
+        require(_rewardBalance > 0, "There are no rewards left to distribute");
         updateRewards(msg.sender);
         uint256 reward = rewards[msg.sender];
         require(reward > 0, "No rewards available");
