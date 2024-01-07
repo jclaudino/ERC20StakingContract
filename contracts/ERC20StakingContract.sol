@@ -132,7 +132,12 @@ contract ERC20StakingContract is Ownable, ReentrancyGuard {
     /// @dev Unstakes all tokens staked by the user, updates their reward, and transfers both the staked tokens
     ///      and the rewards back to the user. 
     ///      Disables staking if the reward pool is depleted.
+    ///      Requires that staking is enabled
+    ///      Requires that there are rewards left to distribute
+    ///      Requires that the user has tokens staked.
     function unstakeAndClaimRewards() external nonReentrant {
+        require(stakingEnabled, "Staking is currently disabled");
+        require(_rewardBalance > 0, "There are no rewards left to distribute");
         uint256 stakedAmount = stakedBalances[msg.sender];
         require(stakedAmount > 0, "No tokens to unstake");
 
