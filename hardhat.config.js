@@ -1,4 +1,5 @@
 require("@nomicfoundation/hardhat-toolbox");
+require('solidity-docgen');
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
@@ -9,4 +10,5 @@ module.exports = {
       chainId: 31337, // Chain ID of your local network (E.g., Hardhat Network)
     },
   },
+  docgen: {}
 };
