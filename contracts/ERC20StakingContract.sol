@@ -49,7 +49,7 @@ contract ERC20StakingContract is Ownable, ReentrancyGuard {
     ///      It can only be called when staking is disabled to prevent interfering with ongoing staking rewards.
     ///      Requires staking to be disabled (stakingEnabled = false).
     ///      Can only be called by the contract owner.
-    function withdrawRewards() external onlyOwner {
+    function withdrawRewards() external onlyOwner nonReentrant {
         require(!stakingEnabled, "Staking must be disabled to withdraw rewards");
         uint256 remainingRewards = _rewardBalance;
         _rewardBalance = 0;
@@ -88,7 +88,7 @@ contract ERC20StakingContract is Ownable, ReentrancyGuard {
     ///      immediately based on the current APR. 
     ///      This function can only be executed when staking is enabled.
     /// @param amount The number of tokens the user wishes to stake.
-    function stake(uint256 amount) external nonReentrant {
+    function stake(uint256 amount) external {
         require(stakingEnabled, "Staking is currently disabled");
         updateRewards(msg.sender);
         stakedBalances[msg.sender] += amount;
