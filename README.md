@@ -1,1 +1,1 @@
-[Documentation](docs/index.html)
+[Documentation](docs/index.md)
