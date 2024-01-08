@@ -24,9 +24,12 @@ contract ERC20StakingContract is Ownable, ReentrancyGuard {
     uint256 private _totalStaked;
     uint256 private _rewardBalance;
 
-    constructor(address _stakingToken) {
+    /// @notice Initializes the contract with the specified staking token and APR.
+    /// @param _stakingToken The address of the staking token (an ERC20 token) to be used for staking.
+    /// @param _apr The Annual Percentage Rate (APR) for staking rewards in basis points. i.e. 100 == 1% APR
+    constructor(address _stakingToken, uint256 _apr) {
         stakingToken = IERC20(_stakingToken);
-        apr = 1000; // 10% APR in basis points
+        apr = _apr;
     }
 
     /// @notice Deposits a specified amount of tokens into the contract to be used as rewards.

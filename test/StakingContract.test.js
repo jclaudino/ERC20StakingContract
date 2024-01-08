@@ -20,7 +20,7 @@ describe("ERC20StakingContract", function () {
 
         // Deploy ERC20StakingContract and pass the address of the deployed TestToken
         const StakingContract = await ethers.getContractFactory("ERC20StakingContract")
-        stakingContract = await StakingContract.deploy(testToken.target)
+        stakingContract = await StakingContract.deploy(testToken.target, 1000n)
         console.log(`ERC20StakingContract is deployed at address: ${stakingContract.target}`)
 
         await testToken.connect(owner).transfer(user1.address, ethers.parseEther("1000000"))

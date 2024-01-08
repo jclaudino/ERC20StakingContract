@@ -8,7 +8,7 @@ async function main(){
     console.log(`TestToken is deployed at address: ${await testToken.target}`)
 
     const StakingContract = await hre.ethers.getContractFactory("ERC20StakingContract");
-    const stakingContract = await StakingContract.deploy(testToken.target);
+    const stakingContract = await StakingContract.deploy(testToken.target, 1000n);
 
     console.log(`StakingContract is deployed at address: ${await stakingContract.target}`)
 
