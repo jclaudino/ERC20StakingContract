@@ -10,5 +10,7 @@ module.exports = {
       chainId: 31337, // Chain ID of your local network (E.g., Hardhat Network)
     },
   },
-  docgen: {}
+  docgen: {
+    exclude: ['test'],
+  },
 };
